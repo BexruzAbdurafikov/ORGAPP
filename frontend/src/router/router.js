@@ -19,7 +19,7 @@ const routes = [
         loadScritps: async () => {
             await import("../scripts/signin.js");
         },
-        layout: false
+        layout: 'default'
     },
     {
         path: /^\/signup$/,
@@ -30,7 +30,7 @@ const routes = [
         loadScritps: async () => {
             await import("../scripts/signup.js");
         },
-        layout: false
+        layout: 'default'
     }
 ];
 

@@ -1,3 +1,4 @@
+import './assets/index.scss';
 import { handleLinkClick, router } from "./router/router.js";
 
 window.addEventListener('popstate', router);
