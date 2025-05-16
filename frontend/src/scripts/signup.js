@@ -25,7 +25,9 @@ form.onsubmit = async (e) => {
         cookie.setCookie('accessToken', response.data.accessToken, 1);
 
         useToast('success', 'Регистрация прошла успешно!');
-
+        setTimeout(() => {
+            window.location.href = 'Projects';
+        }, 2000);
     } catch (e) {
         if (e.response) {
             const code = e.response.data?.code || e.response.status;

@@ -18,18 +18,16 @@ form.onsubmit = async (e) => {
     fm.forEach((value, key) => {
         user[key] = value;
     })
-    console.log(user);
 
     try {
         const res = await axios.post(import.meta.env.VITE_API_URL + '/authentication', {
             ...user,
             strategy: 'local'
         });
-        console.log(res);
         cookie.setCookie('accessToken', res.data.accessToken, 1);
         useToast('success', 'Вы успешно вошли!');
         setTimeout(() => {
-            window.location.href = '/';
+            window.location.href = 'Projects';
         }, 2000);
     } catch (e) {
         const code = e.response.data?.code || e.response.status;

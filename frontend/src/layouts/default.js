@@ -1,4 +1,7 @@
-function drawHeader() {
+import { useUser } from "../utils/useUser.js";
+
+async function drawHeader() {
+
     const header = document.createElement('header');
     const div = document.createElement('div');
     const logo = document.createElement('span');
@@ -20,6 +23,8 @@ function drawHeader() {
     div.append(logo, title);
     header.appendChild(div);
     document.body.prepend(header);
-}
 
+
+}
+useUser();
 drawHeader();

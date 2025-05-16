@@ -1,13 +1,40 @@
+import AuthMiddleware from "../middlewares/auth.js";
+
 const routes = [
     {
         path: /^\/$/,
         view: async () => {
-            const res = await fetch('src/pages/home.html');
+            const res = await fetch('src/pages/ProjectPage.html');
             return await res.text();
         },
         loadScritps: async () => {
-            await import("../scripts/home.js");
+            await import("../scripts/ProjectPage.js");
         },
+        middlewares: [AuthMiddleware],
+        layout: 'default'
+    },
+    {
+        path: /^\/ProjectPage$/,
+        view: async () => {
+            const res = await fetch('src/pages/ProjectPage.html');
+            return await res.text();
+        },
+        loadScritps: async () => {
+            await import("../scripts/ProjectPage.js");
+        },
+        middlewares: [AuthMiddleware],
+        layout: 'default'
+    },
+    {
+        path: /^\/Projects$/,
+        view: async () => {
+            const res = await fetch('src/pages/Projects.html');
+            return await res.text();
+        },
+        loadScritps: async () => {
+            await import("../scripts/Projects.js");
+        },
+        middlewares: [AuthMiddleware],
         layout: 'default'
     },
     {
@@ -38,7 +65,6 @@ const overlay = document.querySelector('#loader-overlay');
 
 export async function router() {
     overlay.classList.remove('hidden');
-    console.clear();
     const path = window.location.pathname;
     const app = document.getElementById('app');
 
