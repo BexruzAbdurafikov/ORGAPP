@@ -4,7 +4,7 @@ export async function drawHeader() {
     const user = await useUser();
 
     const currentPath = window.location.pathname;
-    const allowedPages = ['/Projects', '/ProjectPage'];
+    const allowedPages = ['/Projects', '/ProjectPage', '/'];
 
     const header = document.createElement('header');
     const div = document.createElement('div');
@@ -30,10 +30,12 @@ export async function drawHeader() {
     div.append(logo, title);
     header.appendChild(div);
 
-    if (allowedPages.some((page) => currentPath.includes(page))) {
+    if (allowedPages.includes(currentPath)) {
         header.style.justifyContent = 'space-between';
         header.append(userName);
     }
     
     document.body.prepend(header);
 }
+
+drawHeader();
