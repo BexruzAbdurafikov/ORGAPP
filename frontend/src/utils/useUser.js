@@ -1,6 +1,6 @@
-import { cookie } from './cookie';
+import { cookie } from './cookie.js';
 import axios from 'axios';
-import { parseJwt } from './parseJWT';
+import { parseJwt } from './parseJWT.js';
 
 
 export async function useUser() {
@@ -11,11 +11,11 @@ export async function useUser() {
     }
     
     const payload = parseJwt(token);
-    const user_id = payload.sub;
+
     try {
-        const res = await axios.get(import.meta.env.VITE_API_URL + '/users/' + user_id, {
+        const res = await axios.get(import.meta.env.VITE_API_URL + '/users/' + payload.sub, {
             headers: {
-                Authorization: token
+                Authorization: `Bearer ${token}`
             }
         });
 
