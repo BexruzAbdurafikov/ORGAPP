@@ -1,6 +1,6 @@
 import { useUser } from "../utils/useUser.js";
 
-async function drawHeader() {
+export async function drawHeader() {
     const user = await useUser();
 
     const currentPath = window.location.pathname;
@@ -34,6 +34,6 @@ async function drawHeader() {
         header.style.justifyContent = 'space-between';
         header.append(userName);
     }
+    
     document.body.prepend(header);
 }
-drawHeader();

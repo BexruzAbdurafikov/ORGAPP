@@ -80,11 +80,15 @@ export async function router() {
             const content = await route.view(match);
 
             if (route.layout) {
-                await import(`../layouts/${route.layout}.js`);
+                const layoutModule = await import(`../layouts/${route.layout}.js`);
+                if (layoutModule.drawHeader) {
+                    await layoutModule.drawHeader();
+                }
             }
 
             app.innerHTML = content;
             await route.loadScritps();
+
             return;
         }
     }
