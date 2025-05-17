@@ -4,13 +4,12 @@ const routes = [
     {
         path: /^\/$/,
         view: async () => {
-            const res = await fetch('src/pages/ProjectPage.html');
+            const res = await fetch('src/pages/Projects.html');
             return await res.text();
         },
         loadScritps: async () => {
-            await import("../scripts/ProjectPage.js");
+            await import("../scripts/Projects.js");
         },
-        middlewares: [AuthMiddleware],
         layout: 'default'
     },
     {
@@ -22,7 +21,6 @@ const routes = [
         loadScritps: async () => {
             await import("../scripts/ProjectPage.js");
         },
-        middlewares: [AuthMiddleware],
         layout: 'default'
     },
     {
@@ -34,7 +32,6 @@ const routes = [
         loadScritps: async () => {
             await import("../scripts/Projects.js");
         },
-        middlewares: [AuthMiddleware],
         layout: 'default'
     },
     {
