@@ -10,6 +10,7 @@ const routes = [
         loadScritps: async () => {
             await import("../scripts/Projects.js");
         },
+        middlewares: [AuthMiddleware],
         layout: 'default'
     },
     {
@@ -21,6 +22,7 @@ const routes = [
         loadScritps: async () => {
             await import("../scripts/ProjectPage.js");
         },
+        middlewares: [AuthMiddleware],
         layout: 'default'
     },
     {
@@ -32,6 +34,7 @@ const routes = [
         loadScritps: async () => {
             await import("../scripts/Projects.js");
         },
+        middlewares: [AuthMiddleware],
         layout: 'default'
     },
     {
