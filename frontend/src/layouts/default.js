@@ -11,7 +11,9 @@ export async function drawHeader() {
     const logo = document.createElement('span');
     const title = document.createElement('h1');
     const userName = document.createElement('div');
+    const rightElem = document.createElement('div');
 
+    rightElem.classList.add('header__right');
     userName.classList.add('userName');
     header.classList.add('header');
     div.classList.add('header__elem');
@@ -28,13 +30,23 @@ export async function drawHeader() {
     userName.innerHTML = user.user.displayName?.charAt(0).toUpperCase() || '';
 
     div.append(logo, title);
-    header.appendChild(div);
+    header.append(div, rightElem);
 
     if (allowedPages.includes(currentPath)) {
         header.style.justifyContent = 'space-between';
-        header.append(userName);
+        rightElem.append(userName);
     }
-    
+
+
+    if (currentPath === '/ProjectPage') {
+        const a = document.createElement('a');
+        a.classList.add('header__link');
+        a.textContent = 'All projects';
+        a.href = '/Projects';
+        rightElem.prepend(a);
+    }
+
+
     document.body.prepend(header);
 }
 
