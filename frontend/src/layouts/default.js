@@ -26,17 +26,16 @@ export async function drawHeader() {
 <path d="M9 3H13V11H9V3Z" fill="#262626"/>
 </svg>
 `;
-    title.textContent = 'ORGAPP';
-    userName.innerHTML = user.user.displayName?.charAt(0).toUpperCase() || '';
+    title.textContent = 'ORGAPP'
 
     div.append(logo, title);
     header.append(div, rightElem);
 
     if (allowedPages.includes(currentPath)) {
         header.style.justifyContent = 'space-between';
+        userName.innerHTML = user.user.displayName?.charAt(0).toUpperCase() || '';
         rightElem.append(userName);
     }
-
 
     if (currentPath === '/ProjectPage') {
         const a = document.createElement('a');
@@ -45,7 +44,6 @@ export async function drawHeader() {
         a.href = '/Projects';
         rightElem.prepend(a);
     }
-
 
     document.body.prepend(header);
 }
