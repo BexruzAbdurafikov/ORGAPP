@@ -90,9 +90,9 @@ export async function router() {
         }
     }
 
-    overlay.classList.add('hidden')
     const res = await fetch('src/pages/404.html');
     app.innerHTML = await res.text();
+    overlay.classList.add('hidden')
 }
 
 export function handleLinkClick(e) {
