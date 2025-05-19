@@ -13,8 +13,17 @@
         <div class="projects"></div>
     </div>
     <div class="createMenu">
+
         <form name="createForm">
-            <input id="name" type="text" name="name" placeholder="Название проекта">
+            <span> <svg class="closeBtn" width="24" height="24" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 2L2 24" stroke="black" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M2 2L24 24" stroke="black" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </span>
+            <h1>Создание проекта</h1>
+            <input id="name" type="text" name="name" placeholder="Название проекта" required>
             <button class="createBtn">Создать</button>
         </form>
     </div>

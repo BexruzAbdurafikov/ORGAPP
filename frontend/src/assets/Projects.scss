@@ -102,6 +102,7 @@
             color: #262626;
 
             transition: 0.1s;
+
             &:hover {
                 background-color: #262626;
                 color: #F5F1EF;
@@ -115,11 +116,21 @@
     }
 }
 
-form{
+form {
+    position: relative;
+    background-color: #F5F1EF;
     display: flex;
     flex-direction: column;
     gap: 10px;
     min-width: 500px;
+    height: 100vh;
+    padding: 20px;
+    align-items: center;
+    border-radius: 8px;
+    position: absolute;
+    right: -1000px;
+    transition: 0.5s;
+
     input {
         width: 90%;
         padding: 12px;
@@ -130,14 +141,14 @@ form{
         line-height: 100%;
         letter-spacing: 0%;
         color: #808080;
-    
+
         &:focus {
             outline: none;
             border: 3px solid #00000096;
         }
     }
 
-    .createBtn{
+    .createBtn {
         width: 90%;
         padding: 12px;
         gap: 6px;
@@ -153,6 +164,7 @@ form{
         color: #262626;
 
         transition: 0.1s;
+
         &:hover {
             background-color: #262626;
             color: #F5F1EF;
@@ -163,4 +175,42 @@ form{
             transform: scale(0.95);
         }
     }
+}
+
+form.show {
+    right: 0;
+}
+
+.createMenu{
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(30px);
+
+    .closeBtn{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        transition: 0.2s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+}
+
+.createMenu.show{
+    visibility: visible;
 }
