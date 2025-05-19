@@ -85,7 +85,7 @@ export async function router() {
 
             app.innerHTML = content;
             await route.loadScritps();
-
+            overlay.classList.add('hidden');
             return;
         }
     }

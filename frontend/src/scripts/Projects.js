@@ -5,7 +5,7 @@ import { useToast } from '../utils/hooks';
 import { useUser } from '../utils/useUser';
 
 const loader = document.querySelector('#loader-overlay');
-const UpperBlockBtn = document.querySelector('.upper__block button');
+const create = document.querySelectorAll('.create');
 const createMenu = document.querySelector('.createMenu');
 const form = document.querySelector('form');
 const closeBtn = document.querySelector('.closeBtn');
@@ -22,7 +22,7 @@ form.onsubmit = async (e) => {
     formData.forEach((value, key) => {
         project[key] = value;
     });
-    
+
     try {
         project.participants = [{
             userId: user.user._id,
@@ -42,10 +42,10 @@ form.onsubmit = async (e) => {
     }
 }
 
-UpperBlockBtn.onclick = () => {
+create.forEach((btn) => btn.onclick = () => {
     createMenu.classList.toggle('show');
     form.classList.toggle('show')
-}
+})
 
 closeBtn.onclick = () => {
     form.classList.toggle('show')

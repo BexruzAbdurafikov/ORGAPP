@@ -3,7 +3,7 @@ import { useUser } from "../utils/useUser.js";
 
 async function layout() {
     const user = await useUser();
-    drawHeader(user);
+    await drawHeader(user);
 }
 
 layout();
