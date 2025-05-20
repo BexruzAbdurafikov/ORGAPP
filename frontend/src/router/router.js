@@ -14,7 +14,7 @@ const routes = [
         layout: 'default'
     },
     {
-        path: /^\/ProjectPage$/,
+        path: /^\/ProjectPage\/[a-zA-Z0-9]+$/,
         view: async () => {
             const res = await fetch('src/pages/ProjectPage.html');
             return await res.text();

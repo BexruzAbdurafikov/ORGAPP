@@ -74,6 +74,10 @@ async function drawProject() {
         title.textContent = project.name;
         div.textContent = `P ${index + 1}`;
 
+        projectBlock.onclick = () => {
+            window.location.href = `/ProjectPage/${project._id}`;
+        }
+
         projectBlock.append(title);
         projects_elems.append(div);
         projects__container.append(projectBlock);
