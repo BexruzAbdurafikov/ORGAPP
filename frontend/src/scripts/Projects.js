@@ -51,3 +51,28 @@ closeBtn.onclick = () => {
     form.classList.toggle('show')
     createMenu.classList.toggle('show');
 }
+
+async function drawProject() {
+    const res = await axios.get(import.meta.env.VITE_API_URL + `/projects`, {
+        headers: {
+            Authorization: `Bearer ${cookie.getCookie('accessToken')}`,
+        }
+    });
+    const projects = res.data.data;
+    const projects__container = document.querySelector('.projects');
+    projects__container.innerHTML = '';
+
+    projects.forEach((project) => {
+        const projectBlock = document.createElement('div');
+        const title = document.createElement('h2');
+
+        projectBlock.classList.add('project');
+        title.classList.add('title');
+
+        title.textContent = project.name;
+        projectBlock.append(title);
+        projects__container.append(projectBlock);
+    })
+}
+
+drawProject();
