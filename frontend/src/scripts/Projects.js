@@ -61,16 +61,21 @@ async function drawProject() {
     const projects = res.data.data;
     const projects__container = document.querySelector('.projects');
     projects__container.innerHTML = '';
+    const projects_elems = document.querySelector('.projects__elems');
 
-    projects.forEach((project) => {
+    projects.forEach((project, index) => {
         const projectBlock = document.createElement('div');
         const title = document.createElement('h2');
+        const div = document.createElement('div');
 
         projectBlock.classList.add('project');
         title.classList.add('title');
 
         title.textContent = project.name;
+        div.textContent = `P ${index + 1}`;
+
         projectBlock.append(title);
+        projects_elems.append(div);
         projects__container.append(projectBlock);
     })
 }
