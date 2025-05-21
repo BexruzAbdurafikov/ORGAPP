@@ -1,22 +1,27 @@
 import axios from 'axios';
 import '../assets/ProjectPage.scss';
 import { cookie } from '../utils/cookie';
+import { useToast } from '../utils/hooks';
 
 const loader = document.querySelector('#loader-overlay');
-loader.classList.add('hidden');
+const title = document.querySelector('.title');
+
 
 async function drawProjectPage() {
     const projectId = window.location.pathname.split('/')[2];
-    const res = await axios.get(import.meta.env.VITE_API_URL + `/projects/${projectId}`, {
-        headers: {
-            Authorization: `Bearer ${cookie.getCookie('accessToken')}`,
-        }
-    });
-    const project = res.data;
-
-    const title = document.querySelector('.title');
-    
-    title.textContent = project.name;
+    loader.classList.remove('hidden');
+    try{
+        const res = await axios.get(import.meta.env.VITE_API_URL + `/projects/${projectId}`, {
+            headers: {
+                Authorization: cookie.getCookie('accessToken')
+            }
+        });
+        const project = res.data;
+    }catch(e) {
+        useToast('error', 'Failed to load project data');
+    }finally {
+        loader.classList.add('hidden');
+    }
 }
 
 drawProjectPage();

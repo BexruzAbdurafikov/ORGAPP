@@ -14,7 +14,7 @@ const routes = [
         layout: 'default'
     },
     {
-        path: /^\/ProjectPage\/[a-zA-Z0-9]+$/,
+        path: /^\/ProjectPage$/,
         view: async () => {
             const res = await fetch('src/pages/ProjectPage.html');
             return await res.text();
@@ -63,7 +63,7 @@ const routes = [
 
 const overlay = document.querySelector('#loader-overlay');
 
-export async function router() {
+export async function router() {    
     overlay.classList.remove('hidden');
     const path = window.location.pathname;
     const app = document.getElementById('app');
@@ -78,6 +78,8 @@ export async function router() {
             }
 
             const content = await route.view(match);
+            console.log(content);
+            
 
             if (route.layout) {
                 await import(`../layouts/${route.layout}.js`);
