@@ -12,6 +12,7 @@
   align-items: center;
   padding: 20px;
 }
+
 .container__elem1 .container__elem1__child {
   min-width: 90%;
   display: flex;
@@ -19,11 +20,13 @@
   align-items: center;
   gap: 10px;
 }
+
 .container__elem1 .container__elem1__child .projects__elems {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .container__elem1 .container__elem1__child .projects__elems div {
   min-width: 50px;
   border-radius: 10px;
@@ -38,12 +41,15 @@
   transition: 0.2s ease-in-out;
   font-size: 20px;
 }
+
 .container__elem1 .container__elem1__child .projects__elems div:hover {
   transform: scale(1.07);
 }
+
 .container__elem1 .container__elem1__child .projects__elems div:active {
   transform: scale(0.95);
 }
+
 .container__elem1 .container__elem1__child button {
   border: none;
   min-width: 50px;
@@ -59,9 +65,11 @@
   transition: 0.2s ease-in-out;
   font-size: 20px;
 }
+
 .container__elem1 .container__elem1__child button:hover {
   transform: scale(1.07);
 }
+
 .container__elem1 .container__elem1__child button:active {
   transform: scale(0.95);
 }
@@ -71,16 +79,19 @@
   display: flex;
   flex-direction: column;
 }
+
 .container__elem2 .upper__block {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
 }
+
 .container__elem2 .upper__block h1 {
   font-size: 40px;
   color: #262626;
 }
+
 .container__elem2 .upper__block button {
   width: 150px;
   height: 50px;
@@ -96,11 +107,13 @@
   color: #262626;
   transition: 0.1s;
 }
+
 .container__elem2 .upper__block button:hover {
   background-color: #262626;
   color: #F5F1EF;
   transform: scale(1.05);
 }
+
 .container__elem2 .upper__block button:active {
   transform: scale(0.95);
 }
@@ -120,6 +133,7 @@ form {
   right: -1000px;
   transition: 0.5s;
 }
+
 form input {
   width: 90%;
   padding: 12px;
@@ -131,10 +145,12 @@ form input {
   letter-spacing: 0%;
   color: #808080;
 }
+
 form input:focus {
   outline: none;
   border: 3px solid rgba(0, 0, 0, 0.5882352941);
 }
+
 form .createBtn {
   width: 90%;
   padding: 12px;
@@ -150,11 +166,13 @@ form .createBtn {
   color: #262626;
   transition: 0.1s;
 }
+
 form .createBtn:hover {
   background-color: #262626;
   color: #F5F1EF;
   transform: scale(1.05);
 }
+
 form .createBtn:active {
   transform: scale(0.95);
 }
@@ -176,8 +194,9 @@ form.show {
   justify-content: center;
   z-index: 1000;
   -webkit-backdrop-filter: blur(30px);
-          backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
 }
+
 .createMenu .closeBtn {
   position: absolute;
   top: 20px;
@@ -185,9 +204,11 @@ form.show {
   transition: 0.2s ease-in-out;
   cursor: pointer;
 }
+
 .createMenu .closeBtn:hover {
   transform: scale(1.1);
 }
+
 .createMenu .closeBtn:active {
   transform: scale(0.95);
 }
@@ -204,10 +225,11 @@ form.show {
   margin: 0 auto;
   width: 100%;
 }
+
 .projects .project {
   padding: 20px;
   border-radius: 8px;
   background-color: #262626;
   color: white;
   word-break: break-word;
-}/*# sourceMappingURL=ProjectPage.css.map */
+}

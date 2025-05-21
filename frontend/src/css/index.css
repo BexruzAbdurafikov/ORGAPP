@@ -46,10 +46,12 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
+
 #loader-overlay {
   position: fixed;
   top: 0;
@@ -62,7 +64,7 @@
   justify-content: center;
   z-index: 1001;
   -webkit-backdrop-filter: blur(30px);
-          backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
 }
 
 .hidden {
@@ -80,6 +82,7 @@ header {
   padding: 20px;
   color: #F5F1EF;
 }
+
 header .userName {
   width: 40px;
   height: 40px;
@@ -91,17 +94,20 @@ header .userName {
   align-items: center;
   font-size: 24px;
 }
+
 header .header__right {
   display: flex;
   gap: 20px;
   align-items: center;
 }
+
 header .header__right a {
   text-decoration: none;
   color: #F5F1EF;
   font-size: 20px;
   position: relative;
 }
+
 header .header__right a::after {
   content: "";
   position: absolute;
@@ -112,19 +118,22 @@ header .header__right a::after {
   background-color: #F5F1EF;
   transition: 0.3s;
 }
+
 header .header__right a:hover::after {
   width: 100%;
   left: 0;
 }
+
 header .header__elem {
   background-color: #262626;
   display: flex;
   gap: 8px;
   align-items: center;
 }
+
 header .header__elem .title {
   font-weight: 700;
   font-size: 30px;
   line-height: 100%;
   letter-spacing: 0%;
-}/*# sourceMappingURL=index.css.map */
+}
