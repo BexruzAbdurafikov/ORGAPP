@@ -14,7 +14,7 @@ const routes = [
         layout: 'default'
     },
     {
-        path: /^\/ProjectPage$/,
+        path: /^\/ProjectPage\/[a-zA-Z0-9]+$/,
         view: async () => {
             const res = await fetch('src/pages/ProjectPage.html');
             return await res.text();
@@ -78,16 +78,13 @@ export async function router() {
             }
 
             const content = await route.view(match);
-            console.log(content);
             
-
             if (route.layout) {
                 await import(`../layouts/${route.layout}.js`);
             }
 
             app.innerHTML = content;
             await route.loadScritps();
-            overlay.classList.add('hidden');
             return;
         }
     }
