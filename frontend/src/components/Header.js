@@ -44,7 +44,7 @@ export async function drawHeader(user) {
             rightElem.append(userName);
         }
 
-        if (currentPath === '/ProjectPage') {
+        if (currentPath === `/ProjectPage/${project._id}`) {
             const a = document.createElement('a');
             a.classList.add('header__link');
             a.textContent = 'All projects';

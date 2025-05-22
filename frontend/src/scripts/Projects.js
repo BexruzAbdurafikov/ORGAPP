@@ -70,18 +70,33 @@ async function drawProject() {
 
         projectBlock.classList.add('project');
         title.classList.add('title');
+        div.classList.add('project__index');
+
+        projectBlock.dataset.index = index;
+        div.dataset.index = index;
 
         title.textContent = project.name;
         div.textContent = `P ${index + 1}`;
 
-        projectBlock.onclick = () => {
+        div.onclick = () => {
             window.location.href = `/ProjectPage/${project._id}`;
         }
+
+        div.addEventListener('mouseenter', () => {
+            const relatedProject = document.querySelector(`.project[data-index="${index}"]`);
+            relatedProject.classList.add('highlight');
+        });
+
+        div.addEventListener('mouseleave', () => {
+            const relatedProject = document.querySelector(`.project[data-index="${index}"]`);
+            relatedProject.classList.remove('highlight');
+        });
 
         projectBlock.append(title);
         projects_elems.append(div);
         projects__container.append(projectBlock);
-    })
+    });
+
 }
 
 drawProject();
