@@ -28,9 +28,13 @@ async function drawProjectPage() {
         const containerElem2 = document.createElement('div');
         const upperBlock = document.createElement('div');
         const title = document.createElement('h1');
-        const createButton2 = document.createElement('button');
+        const inviteBtn = document.createElement('button');
         const projects = document.createElement('div');
+        const participants = document.createElement('div');
+        const inviteBlock = document.createElement('div');
 
+        inviteBlock.classList.add('invite');
+        participants.classList.add('participants');
         container.classList.add('container');
         containerElem1.classList.add('container__elem1');
         containerElem1Child.classList.add('container__elem1__child');
@@ -39,28 +43,34 @@ async function drawProjectPage() {
         containerElem2.classList.add('container__elem2');
         upperBlock.classList.add('upper__block');
         title.classList.add('title');
-        createButton2.classList.add('create');
+        inviteBtn.classList.add('create');
         projects.classList.add('projects');
 
         createButton1.textContent = '+';
         title.textContent = project.name;
-        createButton2.textContent = 'Пригласить';
+        inviteBtn.textContent = 'Пригласить';
 
-        containerElem1Child.appendChild(projectsElems);
-        containerElem1Child.appendChild(createButton1);
-        containerElem1.appendChild(containerElem1Child);
+        project.participants.forEach(participant => {
+            const participantBlock = document.createElement('div');
+            participantBlock.classList.add('InviteUserName');
+            participantBlock.textContent = participant.userName?.charAt(0).toUpperCase() || '';
+            participants.append(participantBlock);
+        });
 
-        upperBlock.appendChild(title);
-        upperBlock.appendChild(createButton2);
-        containerElem2.appendChild(upperBlock);
-        containerElem2.appendChild(projects);
+        inviteBlock.append(inviteBtn, participants);
 
-        container.appendChild(containerElem1);
-        container.appendChild(containerElem2);
+        containerElem1Child.append(projectsElems, createButton1);
+        containerElem1.append(containerElem1Child);
 
-        app.appendChild(container);
+        upperBlock.append(title, inviteBlock);
+        containerElem2.append(upperBlock, projects);
+
+        container.append(containerElem1, containerElem2);
+
+        app.append(container);
+        
     } catch (e) {
-        useToast('error', 'Failed to load project data');
+        useToast('error', 'Ошибка загрузки проекта: ' + e.code);
     } finally {
         loader.classList.add('hidden');
     }

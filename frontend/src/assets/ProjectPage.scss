@@ -238,3 +238,27 @@ form.show {
         word-break: break-word;
     }
 }
+
+.invite{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.participants{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.InviteUserName{
+    background-color: #262626;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    color: #F5F1EF;
+    align-items: center;
+    font-size: 24px;
+}

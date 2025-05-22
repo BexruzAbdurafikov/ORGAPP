@@ -81,18 +81,6 @@ header {
     padding: 20px;
     color: #F5F1EF;
 
-    .userName {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #F5F1EF;
-        display: flex;
-        justify-content: center;
-        color: #262626;
-        align-items: center;
-        font-size: 24px;
-    }
-
     .header__right {
         display: flex;
         gap: 20px;
@@ -135,4 +123,16 @@ header {
             letter-spacing: 0%;
         }
     }
+}
+
+.userName {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #F5F1EF;
+    display: flex;
+    justify-content: center;
+    color: #262626;
+    align-items: center;
+    font-size: 24px;
 }
