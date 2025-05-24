@@ -20,6 +20,10 @@ async function drawProjectPage() {
 
         const app = document.querySelector('#app');
 
+        const inviteMenu = document.createElement('div');
+        const form = document.createElement('form');
+        const h1 = document.createElement('h1');
+        const invite = document.createElement('button');
         const container = document.createElement('div');
         const containerElem1 = document.createElement('div');
         const containerElem1Child = document.createElement('div');
@@ -33,6 +37,8 @@ async function drawProjectPage() {
         const participants = document.createElement('div');
         const inviteBlock = document.createElement('div');
 
+        invite.classList.add('inviteBtn')
+        inviteMenu.classList.add('inviteMenu');
         inviteBlock.classList.add('invite');
         participants.classList.add('participants');
         container.classList.add('container');
@@ -46,9 +52,11 @@ async function drawProjectPage() {
         inviteBtn.classList.add('create');
         projects.classList.add('projects');
 
+        
         createButton1.textContent = '+';
         title.textContent = project.name;
         inviteBtn.textContent = 'Пригласить';
+        invite.textContent = '+'
 
         project.participants.forEach(participant => {
             const participantBlock = document.createElement('div');
@@ -57,6 +65,8 @@ async function drawProjectPage() {
             participants.append(participantBlock);
         });
 
+        form.append(h1, invite);
+        inviteMenu.append(form);
         inviteBlock.append(inviteBtn, participants);
 
         containerElem1Child.append(projectsElems, createButton1);
@@ -65,10 +75,10 @@ async function drawProjectPage() {
         upperBlock.append(title, inviteBlock);
         containerElem2.append(upperBlock, projects);
 
-        container.append(containerElem1, containerElem2);
+        container.append(containerElem1, containerElem2, inviteMenu);
 
         app.append(container);
-        
+
     } catch (e) {
         useToast('error', 'Ошибка загрузки проекта: ' + e.code);
     } finally {

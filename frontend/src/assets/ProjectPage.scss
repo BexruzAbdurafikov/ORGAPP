@@ -187,7 +187,7 @@ form.show {
     right: 0;
 }
 
-.createMenu {
+.inviteMenu {
     visibility: hidden;
     position: fixed;
     top: 0;
@@ -218,7 +218,7 @@ form.show {
     }
 }
 
-.createMenu.show {
+.inviteMenu.show {
     visibility: visible;
 }
 
@@ -262,3 +262,4 @@ form.show {
     align-items: center;
     font-size: 24px;
 }
+
