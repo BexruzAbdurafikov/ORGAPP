@@ -28,7 +28,7 @@ async function drawProjectPage() {
         const containerElem1 = document.createElement('div');
         const containerElem1Child = document.createElement('div');
         const projectsElems = document.createElement('div');
-        const createButton1 = document.createElement('button');
+        const createTask = document.createElement('button');
         const containerElem2 = document.createElement('div');
         const upperBlock = document.createElement('div');
         const title = document.createElement('h1');
@@ -45,7 +45,7 @@ async function drawProjectPage() {
         containerElem1.classList.add('container__elem1');
         containerElem1Child.classList.add('container__elem1__child');
         projectsElems.classList.add('projects__elems');
-        createButton1.classList.add('create');
+        createTask.classList.add('create');
         containerElem2.classList.add('container__elem2');
         upperBlock.classList.add('upper__block');
         title.classList.add('title');
@@ -53,7 +53,7 @@ async function drawProjectPage() {
         projects.classList.add('projects');
 
         
-        createButton1.textContent = '+';
+        createTask.textContent = '+';
         title.textContent = project.name;
         inviteBtn.textContent = 'Пригласить';
         invite.textContent = '+'
@@ -65,11 +65,16 @@ async function drawProjectPage() {
             participants.append(participantBlock);
         });
 
+        inviteBtn.onclick = () => {
+            inviteMenu.classList.toggle('show');
+            form.classList.toggle('show');
+        }
+
         form.append(h1, invite);
         inviteMenu.append(form);
         inviteBlock.append(inviteBtn, participants);
 
-        containerElem1Child.append(projectsElems, createButton1);
+        containerElem1Child.append(projectsElems, createTask);
         containerElem1.append(containerElem1Child);
 
         upperBlock.append(title, inviteBlock);
@@ -78,7 +83,6 @@ async function drawProjectPage() {
         container.append(containerElem1, containerElem2, inviteMenu);
 
         app.append(container);
-
     } catch (e) {
         useToast('error', 'Ошибка загрузки проекта: ' + e.code);
     } finally {
