@@ -77,6 +77,38 @@ async function drawProjectPage() {
             invite.textContent = '+'
             participantName.textContent = user.displayName
 
+            invite.onclick = async () => {
+                const participant = {
+                    userId: user._id,
+                    userName: user.displayName,
+                };
+
+                if (!project.participants.some(p => p.userId === participant.userId)) {
+                    project.participants.push(participant);
+
+                    await axios.patch(import.meta.env.VITE_API_URL + `/projects/${projectId}`, 
+                        {participants: project.participants},
+                        {
+                            headers: {
+                                Authorization: cookie.getCookie('accessToken')
+                            }
+                        }
+                    )
+
+                    const participantCircle = document.createElement('div');
+                    participantCircle.classList.add('InviteUserName');
+                    participantCircle.textContent = participant.userName?.charAt(0).toUpperCase() || '';
+                    participants.append(participantCircle);
+
+                    useToast('success', 'Пользователь успешно приглашен!');
+                } else {
+                    useToast('error', 'Пользователь уже приглашен в проект!');
+                }
+
+                inviteMenuElem.classList.remove('show');
+                inviteMenu.classList.remove('show');
+            }
+
             participantBlock.append(participantName, invite);
             inviteMenuElem.append(participantBlock)
         })
