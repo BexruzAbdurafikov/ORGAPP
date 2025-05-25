@@ -16,14 +16,19 @@ async function drawProjectPage() {
                 Authorization: cookie.getCookie('accessToken')
             }
         });
+        const response = await axios.get(import.meta.env.VITE_API_URL + `/users`, {
+            headers: {
+                Authorization: cookie.getCookie('accessToken')
+            }
+        });
+        const users = response.data.data;
         const project = res.data;
 
         const app = document.querySelector('#app');
 
+        const span = document.createElement('span');
         const inviteMenu = document.createElement('div');
-        const form = document.createElement('form');
-        const h1 = document.createElement('h1');
-        const invite = document.createElement('button');
+        const inviteMenuElem = document.createElement('div');
         const container = document.createElement('div');
         const containerElem1 = document.createElement('div');
         const containerElem1Child = document.createElement('div');
@@ -37,7 +42,7 @@ async function drawProjectPage() {
         const participants = document.createElement('div');
         const inviteBlock = document.createElement('div');
 
-        invite.classList.add('inviteBtn')
+        inviteMenuElem.classList.add('inviteMenu__elem');
         inviteMenu.classList.add('inviteMenu');
         inviteBlock.classList.add('invite');
         participants.classList.add('participants');
@@ -52,26 +57,52 @@ async function drawProjectPage() {
         inviteBtn.classList.add('create');
         projects.classList.add('projects');
 
-        
+        span.innerHTML = `<svg class="closeBtn" width="24" height="24" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 2L2 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M2 2L24 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>`;
         createTask.textContent = '+';
         title.textContent = project.name;
         inviteBtn.textContent = 'Пригласить';
-        invite.textContent = '+'
+
+        users.forEach(user => {
+            const participantName = document.createElement('h1');
+            const invite = document.createElement('button');
+            const participantBlock = document.createElement('div');
+
+            participantBlock.classList.add('participantBlock');
+            participantName.classList.add('title');
+            invite.classList.add('inviteBtn');
+
+            invite.textContent = '+'
+            participantName.textContent = user.displayName
+
+            participantBlock.append(participantName, invite);
+            inviteMenuElem.append(participantBlock)
+        })
 
         project.participants.forEach(participant => {
-            const participantBlock = document.createElement('div');
-            participantBlock.classList.add('InviteUserName');
-            participantBlock.textContent = participant.userName?.charAt(0).toUpperCase() || '';
-            participants.append(participantBlock);
+            const participantCircle = document.createElement('div');
+
+            participantCircle.classList.add('InviteUserName');
+
+            participantCircle.textContent = participant.userName?.charAt(0).toUpperCase() || '';
+
+            participants.append(participantCircle);
         });
 
         inviteBtn.onclick = () => {
             inviteMenu.classList.toggle('show');
-            form.classList.toggle('show');
+            inviteMenuElem.classList.toggle('show');
         }
 
-        form.append(h1, invite);
-        inviteMenu.append(form);
+        span.onclick = () => {
+            inviteMenu.classList.remove('show');
+            inviteMenuElem.classList.remove('show');
+        }
+
+        inviteMenuElem.append(span);
+        inviteMenu.append(inviteMenuElem);
         inviteBlock.append(inviteBtn, participants);
 
         containerElem1Child.append(projectsElems, createTask);
