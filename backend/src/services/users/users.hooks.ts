@@ -3,6 +3,9 @@ import * as local from '@feathersjs/authentication-local';
 import { HookContext } from '@feathersjs/feathers';
 // Don't remove this comment. It's needed to format import lines nicely.
 import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose';
+import projectsModel from '../../models/projects.model';
+import app from '../../app';
 
 const { authenticate } = feathersAuthentication.hooks;
 const { hashPassword, protect } = local.hooks;
@@ -28,16 +31,20 @@ export default {
     get: [
       async (context: HookContext) => {
         const userId = context.dispatch!._id;
-        const projects = await context.app.service('projects').find({
-          'participants.userId': userId,
+
+        const projects = await projectsModel(app).find({
+          'participants.userId': new mongoose.Types.ObjectId(userId),
           query: {
             $limit: 0
           }
         });
 
+        console.log(projects);
+
+
         context.dispatch = {
           user: context.params.user,
-          projects: projects.data
+          projects: projects
         }
       }
     ],

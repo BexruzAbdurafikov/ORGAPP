@@ -5,6 +5,20 @@ import { useToast } from '../utils/hooks';
 
 const loader = document.querySelector('#loader-overlay');
 const title = document.querySelector('.title');
+let project;
+
+function renderSections(sectionsContainer) {
+    const createSectionBtn = sectionsContainer.querySelector('.createSectionBtn');
+    sectionsContainer.innerHTML = '';
+    sectionsContainer.appendChild(createSectionBtn);
+
+    project.sections.forEach(section => {
+        const sectionElement = document.createElement('div');
+        sectionElement.classList.add('section');
+        sectionElement.textContent = section.title;
+        sectionsContainer.prepend(sectionElement);
+    });
+}
 
 
 async function drawProjectPage() {
@@ -22,9 +36,12 @@ async function drawProjectPage() {
             }
         });
         const users = response.data.data;
-        const project = res.data;
+        project = res.data;
 
-        const app = document.querySelector('#app');
+        console.log(project);
+
+
+        const body = document.querySelector('body');
 
         const span = document.createElement('span');
         const inviteMenu = document.createElement('div');
@@ -38,10 +55,12 @@ async function drawProjectPage() {
         const upperBlock = document.createElement('div');
         const title = document.createElement('h1');
         const inviteBtn = document.createElement('button');
-        const projects = document.createElement('div');
+        const sections = document.createElement('div');
         const participants = document.createElement('div');
         const inviteBlock = document.createElement('div');
+        const createSectionBtn = document.createElement('button');
 
+        createSectionBtn.classList.add('createSectionBtn');
         inviteMenuElem.classList.add('inviteMenu__elem');
         inviteMenu.classList.add('inviteMenu');
         inviteBlock.classList.add('invite');
@@ -55,7 +74,7 @@ async function drawProjectPage() {
         upperBlock.classList.add('upper__block');
         title.classList.add('title');
         inviteBtn.classList.add('create');
-        projects.classList.add('projects');
+        sections.classList.add('sections');
 
         span.innerHTML = `<svg class="closeBtn" width="24" height="24" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
             <path d="M24 2L2 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
@@ -64,6 +83,7 @@ async function drawProjectPage() {
         createTask.textContent = '+';
         title.textContent = project.name;
         inviteBtn.textContent = 'Пригласить';
+        createSectionBtn.textContent = '+ Создать раздел'
 
         users.forEach(user => {
             const participantName = document.createElement('h1');
@@ -86,8 +106,8 @@ async function drawProjectPage() {
                 if (!project.participants.some(p => p.userId === participant.userId)) {
                     project.participants.push(participant);
 
-                    await axios.patch(import.meta.env.VITE_API_URL + `/projects/${projectId}`, 
-                        {participants: project.participants},
+                    await axios.patch(import.meta.env.VITE_API_URL + `/projects/${projectId}`,
+                        { participants: project.participants },
                         {
                             headers: {
                                 Authorization: cookie.getCookie('accessToken')
@@ -133,6 +153,14 @@ async function drawProjectPage() {
             inviteMenuElem.classList.remove('show');
         }
 
+        createSectionBtn.onclick = () => {
+            createSection();
+        }
+
+        sections.append(createSectionBtn);
+        renderSections(sections);
+
+
         inviteMenuElem.append(span);
         inviteMenu.append(inviteMenuElem);
         inviteBlock.append(inviteBtn, participants);
@@ -141,15 +169,51 @@ async function drawProjectPage() {
         containerElem1.append(containerElem1Child);
 
         upperBlock.append(title, inviteBlock);
-        containerElem2.append(upperBlock, projects);
+        containerElem2.append(upperBlock, sections);
 
         container.append(containerElem1, containerElem2, inviteMenu);
 
-        app.append(container);
+        body.append(container);
     } catch (e) {
         useToast('error', 'Ошибка загрузки проекта: ' + e.code);
     } finally {
         loader.classList.add('hidden');
+    }
+}
+
+async function createSection() {
+    const sectionName = prompt('Введите название раздела:');
+    if (sectionName !== null && sectionName.trim() !== '') {
+        try {
+            const projectId = window.location.pathname.split('/')[2];
+
+            const updatedSections = project.sections ? [...project.sections] : [];
+            updatedSections.push({
+                title: sectionName.trim(),
+                tasks: []
+            });
+
+            const response = await axios.patch(
+                import.meta.env.VITE_API_URL + `/projects/${projectId}`,
+                { sections: updatedSections },
+                {
+                    headers: {
+                        Authorization: cookie.getCookie('accessToken')
+                    }
+                }
+            );
+
+            project = response.data;
+
+            const sectionsContainer = document.querySelector('.sections');
+            if (sectionsContainer) {
+                renderSections(sectionsContainer);
+                useToast('success', 'Раздел успешно добавлен!');
+            }
+        } catch (e) {
+            console.error('Ошибка создания раздела:', e);
+            useToast('error', 'Ошибка при сохранении раздела: ' + (e.response?.data?.message || e.message));
+        }
     }
 }
 

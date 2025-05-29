@@ -92,7 +92,7 @@
             color: #262626;
         }
 
-        button {
+        .create {
             width: 150px;
             height: 50px;
             gap: 6px;
@@ -119,6 +119,32 @@
                 transform: scale(0.95);
             }
         }
+    }
+}
+
+.createSectionBtn {
+    width: 170px;
+    height: 50px;
+    gap: 6px;
+    border: 5px solid #262626;
+    background-color: #262626;
+    border-radius: 8px;
+    cursor: pointer;
+
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 12px;
+    letter-spacing: 0%;
+    color: #F5F1EF;
+
+    transition: 0.1s;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &:active {
+        transform: scale(0.95);
     }
 }
 
@@ -203,7 +229,7 @@
     visibility: visible;
 }
 
-.projects {
+.sections {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
@@ -211,10 +237,10 @@
     margin: 0 auto;
     width: 100%;
 
-    .project {
+    .section {
         padding: 20px;
         border-radius: 8px;
-        background-color: #262626;
+        background-color: #808080;
         color: white;
         word-break: break-word;
     }
