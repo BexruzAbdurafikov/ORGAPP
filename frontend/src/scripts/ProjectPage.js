@@ -4,7 +4,6 @@ import { cookie } from '../utils/cookie';
 import { useToast } from '../utils/hooks';
 
 const loader = document.querySelector('#loader-overlay');
-const title = document.querySelector('.title');
 let project;
 
 function renderSections(sectionsContainer) {
@@ -20,11 +19,10 @@ function renderSections(sectionsContainer) {
     });
 }
 
-
 async function drawProjectPage() {
     const projectId = window.location.pathname.split('/')[2];
-    loader.classList.remove('hidden');
     try {
+        loader.classList.remove('hidden');
         const res = await axios.get(import.meta.env.VITE_API_URL + `/projects/${projectId}`, {
             headers: {
                 Authorization: cookie.getCookie('accessToken')
@@ -38,14 +36,8 @@ async function drawProjectPage() {
         const users = response.data.data;
         project = res.data;
 
-        console.log(project);
-
-
         const body = document.querySelector('body');
 
-        const span = document.createElement('span');
-        const inviteMenu = document.createElement('div');
-        const inviteMenuElem = document.createElement('div');
         const container = document.createElement('div');
         const containerElem1 = document.createElement('div');
         const containerElem1Child = document.createElement('div');
@@ -54,17 +46,22 @@ async function drawProjectPage() {
         const containerElem2 = document.createElement('div');
         const upperBlock = document.createElement('div');
         const title = document.createElement('h1');
-        const inviteBtn = document.createElement('button');
+        const inviteBlock = document.createElement('div');
         const sections = document.createElement('div');
         const participants = document.createElement('div');
-        const inviteBlock = document.createElement('div');
         const createSectionBtn = document.createElement('button');
 
-        createSectionBtn.classList.add('createSectionBtn');
-        inviteMenuElem.classList.add('inviteMenu__elem');
-        inviteMenu.classList.add('inviteMenu');
-        inviteBlock.classList.add('invite');
-        participants.classList.add('participants');
+        const inviteMenu = document.createElement('div');
+        const inviteMenuElem = document.createElement('div');
+        const inviteCloseBtn = document.createElement('span');
+        const inviteBtn = document.createElement('button');
+
+        const sectionMenu = document.createElement('div');
+        const sectionMenuElem = document.createElement('form');
+        const sectionCloseBtn = document.createElement('span');
+        const sectionInput = document.createElement('input');
+        const sectionSubmitBtn = document.createElement('button');
+
         container.classList.add('container');
         containerElem1.classList.add('container__elem1');
         containerElem1Child.classList.add('container__elem1__child');
@@ -73,106 +70,150 @@ async function drawProjectPage() {
         containerElem2.classList.add('container__elem2');
         upperBlock.classList.add('upper__block');
         title.classList.add('title');
-        inviteBtn.classList.add('create');
+        inviteBlock.classList.add('invite');
+        participants.classList.add('participants');
         sections.classList.add('sections');
+        createSectionBtn.classList.add('createSectionBtn');
 
-        span.innerHTML = `<svg class="closeBtn" width="24" height="24" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24 2L2 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M2 2L24 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>`;
+        inviteMenu.classList.add('inviteMenu');
+        inviteMenuElem.classList.add('inviteMenu__elem');
+        inviteBtn.classList.add('create');
+
+        sectionMenu.classList.add('inviteMenu');
+        sectionMenuElem.classList.add('inviteMenu__elem');
+        sectionSubmitBtn.classList.add('create');
+
+        sectionInput.required = true;
+
         createTask.textContent = '+';
         title.textContent = project.name;
         inviteBtn.textContent = 'Пригласить';
-        createSectionBtn.textContent = '+ Создать раздел'
+        createSectionBtn.textContent = '+ Создать раздел';
+        sectionSubmitBtn.textContent = 'Создать';
+        sectionInput.placeholder = 'Название раздела';
 
-        users.forEach(user => {
-            const participantName = document.createElement('h1');
-            const invite = document.createElement('button');
-            const participantBlock = document.createElement('div');
-
-            participantBlock.classList.add('participantBlock');
-            participantName.classList.add('title');
-            invite.classList.add('inviteBtn');
-
-            invite.textContent = '+'
-            participantName.textContent = user.displayName
-
-            invite.onclick = async () => {
-                const participant = {
-                    userId: user._id,
-                    userName: user.displayName,
-                };
-
-                if (!project.participants.some(p => p.userId === participant.userId)) {
-                    project.participants.push(participant);
-
-                    await axios.patch(import.meta.env.VITE_API_URL + `/projects/${projectId}`,
-                        { participants: project.participants },
-                        {
-                            headers: {
-                                Authorization: cookie.getCookie('accessToken')
-                            }
-                        }
-                    )
-
-                    const participantCircle = document.createElement('div');
-                    participantCircle.classList.add('InviteUserName');
-                    participantCircle.textContent = participant.userName?.charAt(0).toUpperCase() || '';
-                    participants.append(participantCircle);
-
-                    useToast('success', 'Пользователь успешно приглашен!');
-                } else {
-                    useToast('error', 'Пользователь уже приглашен в проект!');
-                }
-
-                inviteMenuElem.classList.remove('show');
-                inviteMenu.classList.remove('show');
-            }
-
-            participantBlock.append(participantName, invite);
-            inviteMenuElem.append(participantBlock)
-        })
-
-        project.participants.forEach(participant => {
-            const participantCircle = document.createElement('div');
-
-            participantCircle.classList.add('InviteUserName');
-
-            participantCircle.textContent = participant.userName?.charAt(0).toUpperCase() || '';
-
-            participants.append(participantCircle);
-        });
+        inviteCloseBtn.innerHTML = `<svg class="closeBtn" width="24" height="24" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 2L2 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M2 2L24 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>`;
+        
+        sectionCloseBtn.innerHTML = `<svg class="closeBtn" width="24" height="24" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 2L2 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M2 2L24 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>`;
 
         inviteBtn.onclick = () => {
             inviteMenu.classList.toggle('show');
             inviteMenuElem.classList.toggle('show');
-        }
+        };
 
-        span.onclick = () => {
+        inviteCloseBtn.onclick = () => {
             inviteMenu.classList.remove('show');
             inviteMenuElem.classList.remove('show');
-        }
+        };
 
         createSectionBtn.onclick = () => {
-            createSection();
-        }
+            sectionMenu.classList.toggle('show');
+            sectionMenuElem.classList.toggle('show');
+        };
+
+        sectionCloseBtn.onclick = () => {
+            sectionMenu.classList.remove('show');
+            sectionMenuElem.classList.remove('show');
+        };
+
+        sectionSubmitBtn.onclick = async () => {
+            const sectionName = sectionInput.value.trim();
+            if (sectionName) {
+                try {
+                    loader.classList.remove('hidden');
+                    await createSection(sectionName);
+                    sectionInput.value = '';
+                    sectionMenu.classList.remove('show');
+                    sectionMenuElem.classList.remove('show');
+                    useToast('success', 'Раздел успешно создан!');
+                } catch (e) {
+                    useToast('error', 'Ошибка при создании раздела: ' + e.message);
+                } finally {
+                    loader.classList.add('hidden');
+                }
+            }
+        };
+
+        users.forEach(user => {
+            const participantBlock = document.createElement('div');
+            const participantName = document.createElement('h1');
+            const inviteUserBtn = document.createElement('button');
+
+            participantBlock.classList.add('participantBlock');
+            participantName.classList.add('title');
+            inviteUserBtn.classList.add('inviteBtn');
+
+            participantName.textContent = user.displayName;
+            inviteUserBtn.textContent = '+';
+
+            inviteUserBtn.onclick = async () => {
+                try {
+                    loader.classList.remove('hidden');
+                    const participant = {
+                        userId: user._id,
+                        userName: user.displayName,
+                    };
+
+                    if (!project.participants.some(p => p.userId === participant.userId)) {
+                        project.participants.push(participant);
+
+                        await axios.patch(
+                            import.meta.env.VITE_API_URL + `/projects/${projectId}`,
+                            { participants: project.participants },
+                            { headers: { Authorization: cookie.getCookie('accessToken') } }
+                        );
+
+                        const participantCircle = document.createElement('div');
+                        participantCircle.classList.add('InviteUserName');
+                        participantCircle.textContent = participant.userName?.charAt(0).toUpperCase() || '';
+                        participants.append(participantCircle);
+
+                        useToast('success', 'Пользователь успешно приглашен!');
+                    } else {
+                        useToast('error', 'Пользователь уже приглашен в проект!');
+                    }
+
+                    inviteMenu.classList.remove('show');
+                    inviteMenuElem.classList.remove('show');
+                } catch (e) {
+                    useToast('error', 'Ошибка приглашения пользователя: ' + e.code);
+                } finally {
+                    loader.classList.add('hidden');
+                }
+            };
+
+            participantBlock.append(participantName, inviteUserBtn);
+            inviteMenuElem.append(participantBlock);
+        });
+
+        project.participants.forEach(participant => {
+            const participantCircle = document.createElement('div');
+            participantCircle.classList.add('InviteUserName');
+            participantCircle.textContent = participant.userName?.charAt(0).toUpperCase() || '';
+            participants.append(participantCircle);
+        });
+
+        sectionMenuElem.append(sectionCloseBtn, sectionInput, sectionSubmitBtn);
+        sectionMenu.append(sectionMenuElem);
+
+        inviteMenuElem.append(inviteCloseBtn);
+        inviteMenu.append(inviteMenuElem);
 
         sections.append(createSectionBtn);
         renderSections(sections);
 
-
-        inviteMenuElem.append(span);
-        inviteMenu.append(inviteMenuElem);
         inviteBlock.append(inviteBtn, participants);
-
+        upperBlock.append(title, inviteBlock);
         containerElem1Child.append(projectsElems, createTask);
         containerElem1.append(containerElem1Child);
-
-        upperBlock.append(title, inviteBlock);
         containerElem2.append(upperBlock, sections);
-
-        container.append(containerElem1, containerElem2, inviteMenu);
-
+        container.append(containerElem1, containerElem2, inviteMenu, sectionMenu);
         body.append(container);
     } catch (e) {
         useToast('error', 'Ошибка загрузки проекта: ' + e.code);
@@ -181,40 +222,30 @@ async function drawProjectPage() {
     }
 }
 
-async function createSection() {
-    const sectionName = prompt('Введите название раздела:');
-    if (sectionName !== null && sectionName.trim() !== '') {
-        try {
-            const projectId = window.location.pathname.split('/')[2];
+async function createSection(sectionName) {
+    const projectId = window.location.pathname.split('/')[2];
+    
+    let updatedSections = [];
+    
+    if (project.sections) {
+        updatedSections = [...project.sections];
+    }
+    
+    updatedSections.push({
+        title: sectionName.trim(),
+        tasks: []
+    });
 
-            const updatedSections = project.sections ? [...project.sections] : [];
-            updatedSections.push({
-                title: sectionName.trim(),
-                tasks: []
-            });
+    const response = await axios.patch(import.meta.env.VITE_API_URL + `/projects/${projectId}`,
+        { sections: updatedSections },
+        { headers: { Authorization: cookie.getCookie('accessToken') } }
+    );
 
-            const response = await axios.patch(
-                import.meta.env.VITE_API_URL + `/projects/${projectId}`,
-                { sections: updatedSections },
-                {
-                    headers: {
-                        Authorization: cookie.getCookie('accessToken')
-                    }
-                }
-            );
-
-            project = response.data;
-
-            const sectionsContainer = document.querySelector('.sections');
-            if (sectionsContainer) {
-                renderSections(sectionsContainer);
-                useToast('success', 'Раздел успешно добавлен!');
-            }
-        } catch (e) {
-            console.error('Ошибка создания раздела:', e);
-            useToast('error', 'Ошибка при сохранении раздела: ' + (e.response?.data?.message || e.message));
-        }
+    project = response.data;
+    
+    const sectionsContainer = document.querySelector('.sections');
+    if (sectionsContainer) {
+        renderSections(sectionsContainer);
     }
 }
-
 drawProjectPage();
