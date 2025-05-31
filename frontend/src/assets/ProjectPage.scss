@@ -276,11 +276,13 @@
     width: 100%;
 
     .section {
+        position: relative;
         padding: 20px;
         border-radius: 8px;
         background-color: #808080;
         color: white;
         word-break: break-word;
+        min-height: 50px;
     }
 }
 
@@ -312,4 +314,23 @@
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+.addTaskBtn{
+    position: absolute;
+    background-color: #808080;
+    color: #F5F1EF;
+    border: none;
+    cursor: pointer;
+    bottom: 5px;
+    left: 20px;
+    transition: 0.1s;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &:active{
+        transform: scale(0.95);
+    }
 }

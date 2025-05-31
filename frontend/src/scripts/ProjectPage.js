@@ -13,8 +13,19 @@ function renderSections(sectionsContainer) {
 
     project.sections.forEach(section => {
         const sectionElement = document.createElement('div');
+        const sectionTitle = document.createElement('h3');
+        const tasksContainer = document.createElement('div');
+        const addTaskBtn = document.createElement('button');
+        
         sectionElement.classList.add('section');
-        sectionElement.textContent = section.title;
+        tasksContainer.classList.add('tasksContainer');
+        addTaskBtn.classList.add('addTaskBtn');
+
+        sectionTitle.textContent = section.title;
+        addTaskBtn.textContent = '+ Добавить задачу';
+        
+        sectionElement.append(sectionTitle, tasksContainer, addTaskBtn);
+        
         sectionsContainer.prepend(sectionElement);
     });
 }
@@ -62,6 +73,12 @@ async function drawProjectPage() {
         const sectionInput = document.createElement('input');
         const sectionSubmitBtn = document.createElement('button');
 
+        const taskMenu = document.createElement('div');
+        const taskMenuElem = document.createElement('div');
+        const taskCloseBtn = document.createElement('span');
+        const taskInput = document.createElement('input');
+        const taskSubmitBtn = document.createElement('button');
+
         container.classList.add('container');
         containerElem1.classList.add('container__elem1');
         containerElem1Child.classList.add('container__elem1__child');
@@ -78,13 +95,17 @@ async function drawProjectPage() {
         inviteMenu.classList.add('inviteMenu');
         inviteMenuElem.classList.add('inviteMenu__elem');
         inviteBtn.classList.add('create');
-
+        
         sectionMenu.classList.add('inviteMenu');
         sectionMenuElem.classList.add('inviteMenu__elem');
         sectionSubmitBtn.classList.add('create');
 
-        sectionInput.required = true;
+        taskMenu.classList.add('inviteMenu');
+        taskMenuElem.classList.add('inviteMenu__elem');
+        taskSubmitBtn.classList.add('create');
 
+        sectionInput.required = true;
+        
         createTask.textContent = '+';
         title.textContent = project.name;
         inviteBtn.textContent = 'Пригласить';
