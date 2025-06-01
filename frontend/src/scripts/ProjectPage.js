@@ -17,11 +17,13 @@ function renderSections(sectionsContainer) {
     sectionsContainer.innerHTML = '';
     sectionsContainer.appendChild(createSectionBtn);
 
-    project.sections.forEach(section => {
+    project.sections.forEach((section, sectionIndex) => {
         const sectionElement = document.createElement('div');
+        const sectionHeader = document.createElement('div');
         const sectionTitle = document.createElement('h3');
         const tasksContainer = document.createElement('div');
         const addTaskBtn = document.createElement('button');
+        const sectionDelete = document.createElement('button');
 
         const taskMenu = document.createElement('div');
         const taskMenuElem = document.createElement('div');
@@ -30,6 +32,7 @@ function renderSections(sectionsContainer) {
         const taskSelect = document.createElement('select');
         const taskSubmitBtn = document.createElement('button');
 
+        sectionHeader.classList.add('sectionHeader');
         sectionElement.classList.add('section');
         tasksContainer.classList.add('tasksContainer');
         addTaskBtn.classList.add('addTaskBtn');
@@ -40,6 +43,7 @@ function renderSections(sectionsContainer) {
         taskInput.classList.add('taskInput');
         taskSelect.classList.add('taskSelect');
 
+        sectionDelete.textContent = 'Удалить раздел';
         sectionTitle.textContent = section.title;
         addTaskBtn.textContent = '+ Добавить задачу';
 
@@ -62,7 +66,6 @@ function renderSections(sectionsContainer) {
 
         options.forEach(opt => {
             const option = document.createElement('option');
-
             option.value = opt.value;
             option.textContent = opt.text;
 
@@ -78,15 +81,129 @@ function renderSections(sectionsContainer) {
             }
 
             taskSelect.appendChild(option);
-        })
+        });
+
+        if (section.tasks && section.tasks.length > 0) {
+            section.tasks.forEach((task, taskIndex) => {
+                const taskElement = createTaskElement(task, sectionIndex, taskIndex);
+                tasksContainer.append(taskElement);
+            });
+        }
+
+        taskSubmitBtn.onclick = async (e) => {
+            e.preventDefault();
+            const taskName = taskInput.value.trim();
+            const priority = taskSelect.value;
+            
+            if (taskName) {
+                try {
+                    loader.classList.remove('hidden');
+                    const newTask = {
+                        title: taskName,
+                        priority: priority,
+                    };
+                    
+                    if (!project.sections[sectionIndex].tasks) {
+                        project.sections[sectionIndex].tasks = [];
+                    }
+                    
+                    project.sections[sectionIndex].tasks.push(newTask);
+                    await saveProject();
+                    
+                    const taskElement = createTaskElement(newTask, sectionIndex, project.sections[sectionIndex].tasks.length - 1);
+                    tasksContainer.appendChild(taskElement);
+                    
+                    taskInput.value = '';
+                    taskMenu.classList.remove('show');
+                    taskMenuElem.classList.remove('show');
+                    
+                    useToast('success', 'Задача успешно создана!');
+                } catch (e) {
+                    useToast('error', 'Ошибка при создании задачи: ' + e.message);
+                } finally {
+                    loader.classList.add('hidden');
+                }
+            }
+        };
+
+        sectionDelete.onclick = async () => {
+            try {
+                loader.classList.remove('hidden');
+                project.sections.splice(sectionIndex, 1);
+                await saveProject();
+                sectionElement.remove();
+                useToast('success', 'Раздел удален!');
+            } catch (e) {
+                useToast('error', 'Ошибка удаления раздела: ' + e.message);
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
 
         taskMenuElem.append(taskCloseBtn, taskInput, taskSelect, taskSubmitBtn);
         taskMenu.append(taskMenuElem);
 
-        sectionElement.append(sectionTitle, tasksContainer, addTaskBtn, taskMenu);
-
+        sectionHeader.append(sectionTitle, sectionDelete);
+        sectionElement.append(sectionHeader, tasksContainer, addTaskBtn, taskMenu);
         sectionsContainer.prepend(sectionElement);
     });
+}
+
+function createTaskElement(task, sectionIndex, taskIndex) {
+    const taskElement = document.createElement('div');
+    const taskTitle = document.createElement('span');
+    const taskPriority = document.createElement('div');
+    const taskDeleteBtn = document.createElement('button');
+    
+    taskElement.classList.add('task');
+    taskPriority.classList.add('taskPriority');
+    taskDeleteBtn.classList.add('taskDelete');
+
+    taskTitle.textContent = task.title;
+    taskDeleteBtn.textContent = 'Удалить';
+
+    if (task.priority === 'High') {
+        taskPriority.style.backgroundColor = '#dc3545';
+    } else if (task.priority === 'Medium') {
+        taskPriority.style.backgroundColor = '#ffc107';
+    } else {
+        taskPriority.style.backgroundColor = '#28a745';
+    }
+    
+    taskDeleteBtn.onclick = async () => {
+        try {
+            loader.classList.remove('hidden');
+            project.sections[sectionIndex].tasks.splice(taskIndex, 1);
+            await saveProject();
+            taskElement.remove();
+            useToast('success', 'Задача удалена!');
+        } catch (e) {
+            useToast('error', 'Ошибка удаления задачи: ' + e.message);
+        } finally {
+            loader.classList.add('hidden');
+        }
+    };
+    
+    if (task.completed) {
+        taskElement.classList.add('completed');
+    }
+    
+    taskElement.append(taskPriority,taskTitle,taskDeleteBtn);
+    return taskElement;
+}
+
+async function saveProject() {
+    const projectId = window.location.pathname.split('/')[2];
+    const response = await axios.patch(
+        import.meta.env.VITE_API_URL + `/projects/${projectId}`,
+        { 
+            sections: project.sections,
+            participants: project.participants 
+        },
+        { headers: { Authorization: cookie.getCookie('accessToken') } }
+    );
+    project = response.data;
+    return project;
 }
 
 async function drawProjectPage() {
