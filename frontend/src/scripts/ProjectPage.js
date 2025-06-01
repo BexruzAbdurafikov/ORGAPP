@@ -6,6 +6,12 @@ import { useToast } from '../utils/hooks';
 const loader = document.querySelector('#loader-overlay');
 let project;
 
+const options = [
+    { value: 'Low', text: 'Low' },
+    { value: 'Medium', text: 'Medium' },
+    { value: 'High', text: 'High' },
+]
+
 function renderSections(sectionsContainer) {
     const createSectionBtn = sectionsContainer.querySelector('.createSectionBtn');
     sectionsContainer.innerHTML = '';
@@ -16,16 +22,69 @@ function renderSections(sectionsContainer) {
         const sectionTitle = document.createElement('h3');
         const tasksContainer = document.createElement('div');
         const addTaskBtn = document.createElement('button');
-        
+
+        const taskMenu = document.createElement('div');
+        const taskMenuElem = document.createElement('div');
+        const taskCloseBtn = document.createElement('span');
+        const taskInput = document.createElement('input');
+        const taskSelect = document.createElement('select');
+        const taskSubmitBtn = document.createElement('button');
+
         sectionElement.classList.add('section');
         tasksContainer.classList.add('tasksContainer');
         addTaskBtn.classList.add('addTaskBtn');
 
+        taskMenu.classList.add('inviteMenu');
+        taskMenuElem.classList.add('inviteMenu__elem');
+        taskSubmitBtn.classList.add('create');
+        taskInput.classList.add('taskInput');
+        taskSelect.classList.add('taskSelect');
+
         sectionTitle.textContent = section.title;
         addTaskBtn.textContent = '+ Добавить задачу';
-        
-        sectionElement.append(sectionTitle, tasksContainer, addTaskBtn);
-        
+
+        taskInput.placeholder = 'Название задачи';
+        taskInput.required = true;
+        taskSubmitBtn.textContent = 'Создать';
+        taskCloseBtn.innerHTML = `<svg class="closeBtn" width="24" height="24" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 2L2 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M2 2L24 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />`;
+
+        addTaskBtn.onclick = () => {
+            taskMenu.classList.toggle('show');
+            taskMenuElem.classList.toggle('show');
+        }
+
+        taskCloseBtn.onclick = () => {
+            taskMenu.classList.remove('show');
+            taskMenuElem.classList.remove('show');
+        }
+
+        options.forEach(opt => {
+            const option = document.createElement('option');
+
+            option.value = opt.value;
+            option.textContent = opt.text;
+
+            if (opt.value === 'Low') {
+                option.style.backgroundColor = '#28a745';
+                option.style.color = '#ffffff';
+            } else if (opt.value === 'Medium') {
+                option.style.backgroundColor = '#ffc107';
+                option.style.color = '#000000';
+            } else if (opt.value === 'High') {
+                option.style.backgroundColor = '#dc3545';
+                option.style.color = '#ffffff';
+            }
+
+            taskSelect.appendChild(option);
+        })
+
+        taskMenuElem.append(taskCloseBtn, taskInput, taskSelect, taskSubmitBtn);
+        taskMenu.append(taskMenuElem);
+
+        sectionElement.append(sectionTitle, tasksContainer, addTaskBtn, taskMenu);
+
         sectionsContainer.prepend(sectionElement);
     });
 }
@@ -73,12 +132,6 @@ async function drawProjectPage() {
         const sectionInput = document.createElement('input');
         const sectionSubmitBtn = document.createElement('button');
 
-        const taskMenu = document.createElement('div');
-        const taskMenuElem = document.createElement('div');
-        const taskCloseBtn = document.createElement('span');
-        const taskInput = document.createElement('input');
-        const taskSubmitBtn = document.createElement('button');
-
         container.classList.add('container');
         containerElem1.classList.add('container__elem1');
         containerElem1Child.classList.add('container__elem1__child');
@@ -95,17 +148,13 @@ async function drawProjectPage() {
         inviteMenu.classList.add('inviteMenu');
         inviteMenuElem.classList.add('inviteMenu__elem');
         inviteBtn.classList.add('create');
-        
+
         sectionMenu.classList.add('inviteMenu');
         sectionMenuElem.classList.add('inviteMenu__elem');
         sectionSubmitBtn.classList.add('create');
 
-        taskMenu.classList.add('inviteMenu');
-        taskMenuElem.classList.add('inviteMenu__elem');
-        taskSubmitBtn.classList.add('create');
-
         sectionInput.required = true;
-        
+
         createTask.textContent = '+';
         title.textContent = project.name;
         inviteBtn.textContent = 'Пригласить';
@@ -117,7 +166,7 @@ async function drawProjectPage() {
             <path d="M24 2L2 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M2 2L24 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
         </svg>`;
-        
+
         sectionCloseBtn.innerHTML = `<svg class="closeBtn" width="24" height="24" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
             <path d="M24 2L2 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M2 2L24 24" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
@@ -245,13 +294,13 @@ async function drawProjectPage() {
 
 async function createSection(sectionName) {
     const projectId = window.location.pathname.split('/')[2];
-    
+
     let updatedSections = [];
-    
+
     if (project.sections) {
         updatedSections = [...project.sections];
     }
-    
+
     updatedSections.push({
         title: sectionName.trim(),
         tasks: []
@@ -263,7 +312,7 @@ async function createSection(sectionName) {
     );
 
     project = response.data;
-    
+
     const sectionsContainer = document.querySelector('.sections');
     if (sectionsContainer) {
         renderSections(sectionsContainer);

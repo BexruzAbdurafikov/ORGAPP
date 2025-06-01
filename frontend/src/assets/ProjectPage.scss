@@ -189,7 +189,7 @@
         }
     }
 
-    input{
+    input {
         width: 100%;
         height: 40px;
         margin-top: 20px;
@@ -206,7 +206,7 @@
         }
     }
 
-    .create{
+    .create {
         width: 100%;
         height: 40px;
         background-color: #262626;
@@ -316,7 +316,7 @@
     align-items: center;
 }
 
-.addTaskBtn{
+.addTaskBtn {
     position: absolute;
     background-color: #808080;
     color: #F5F1EF;
@@ -330,7 +330,23 @@
         transform: scale(1.05);
     }
 
-    &:active{
+    &:active {
         transform: scale(0.95);
+    }
+}
+
+.taskSelect {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    padding: 0 10px;
+    border: 1px solid #262626;
+    background-color: #F5F1EF;
+    color: #262626;
+    font-size: 16px;
+
+    &:focus {
+        outline: none;
+        border-color: #808080;
     }
 }
