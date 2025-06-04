@@ -94,7 +94,7 @@ function renderSections(sectionsContainer) {
             e.preventDefault();
             const taskName = taskInput.value.trim();
             const priority = taskSelect.value;
-            
+
             if (taskName) {
                 try {
                     loader.classList.remove('hidden');
@@ -102,21 +102,21 @@ function renderSections(sectionsContainer) {
                         title: taskName,
                         priority: priority,
                     };
-                    
+
                     if (!project.sections[sectionIndex].tasks) {
                         project.sections[sectionIndex].tasks = [];
                     }
-                    
+
                     project.sections[sectionIndex].tasks.push(newTask);
                     await saveProject();
-                    
+
                     const taskElement = createTaskElement(newTask, sectionIndex, project.sections[sectionIndex].tasks.length - 1);
                     tasksContainer.appendChild(taskElement);
-                    
+
                     taskInput.value = '';
                     taskMenu.classList.remove('show');
                     taskMenuElem.classList.remove('show');
-                    
+
                     useToast('success', 'Задача успешно создана!');
                 } catch (e) {
                     useToast('error', 'Ошибка при создании задачи: ' + e.message);
@@ -154,7 +154,7 @@ function createTaskElement(task, sectionIndex, taskIndex) {
     const taskTitle = document.createElement('span');
     const taskPriority = document.createElement('div');
     const taskDeleteBtn = document.createElement('button');
-    
+
     taskElement.classList.add('task');
     taskPriority.classList.add('taskPriority');
     taskDeleteBtn.classList.add('taskDelete');
@@ -169,7 +169,7 @@ function createTaskElement(task, sectionIndex, taskIndex) {
     } else {
         taskPriority.style.backgroundColor = '#28a745';
     }
-    
+
     taskDeleteBtn.onclick = async () => {
         try {
             loader.classList.remove('hidden');
@@ -183,12 +183,12 @@ function createTaskElement(task, sectionIndex, taskIndex) {
             loader.classList.add('hidden');
         }
     };
-    
+
     if (task.completed) {
         taskElement.classList.add('completed');
     }
-    
-    taskElement.append(taskPriority,taskTitle,taskDeleteBtn);
+
+    taskElement.append(taskPriority, taskTitle, taskDeleteBtn);
     return taskElement;
 }
 
@@ -196,9 +196,9 @@ async function saveProject() {
     const projectId = window.location.pathname.split('/')[2];
     const response = await axios.patch(
         import.meta.env.VITE_API_URL + `/projects/${projectId}`,
-        { 
+        {
             sections: project.sections,
-            participants: project.participants 
+            participants: project.participants
         },
         { headers: { Authorization: cookie.getCookie('accessToken') } }
     );
