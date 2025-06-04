@@ -1,4 +1,4 @@
-import { drawHeader } from "../components/header.js";
+import { drawHeader } from "../components/Header.js";
 import { useUser } from "../utils/useUser.js";
 
 async function layout() {
