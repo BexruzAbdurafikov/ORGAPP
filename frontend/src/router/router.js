@@ -4,7 +4,7 @@ const routes = [
     {
         path: /^\/$/,
         view: async () => {
-            const res = await fetch('src/pages/Projects.html');
+            const res = await fetch('/src/pages/Projects.html');
             return await res.text();
         },
         loadScritps: async () => {
@@ -16,7 +16,7 @@ const routes = [
     {
         path: /^\/ProjectPage\/[a-zA-Z0-9]+$/,
         view: async () => {
-            const res = await fetch('src/pages/ProjectPage.html');
+            const res = await fetch('/src/pages/ProjectPage.html');
             return await res.text();
         },
         loadScritps: async () => {
@@ -28,7 +28,7 @@ const routes = [
     {
         path: /^\/Projects$/,
         view: async () => {
-            const res = await fetch('src/pages/Projects.html');
+            const res = await fetch('/src/pages/Projects.html');
             return await res.text();
         },
         loadScritps: async () => {
@@ -40,7 +40,7 @@ const routes = [
     {
         path: /^\/signin$/,
         view: async () => {
-            const res = await fetch('src/pages/signin.html');
+            const res = await fetch('/src/pages/signin.html');
             return await res.text();
         },
         loadScritps: async () => {
@@ -51,7 +51,7 @@ const routes = [
     {
         path: /^\/signup$/,
         view: async () => {
-            const res = await fetch('src/pages/signup.html');
+            const res = await fetch('/src/pages/signup.html');
             return await res.text();
         },
         loadScritps: async () => {
