@@ -41,10 +41,7 @@ const routes = [
         path: /^\/signin$/,
         view: async () => {
             const res = await fetch('src/pages/signin.html');
-            console.log(res);
-
             return await res.text();
-            
         },
         loadScritps: async () => {
             await import("../scripts/signin.js");
