@@ -16,6 +16,8 @@ export async function drawHeader(user) {
         } catch (error) {
             console.error("Не удалось загрузить проекты:", error);
         }     
+    }else{
+        projects = [];
     }
 
     const header = document.createElement('header');
