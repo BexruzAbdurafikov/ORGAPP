@@ -10,7 +10,6 @@ window.addEventListener('DOMContentLoaded', () => {
     loader.classList.add('hidden');
 
     form.onsubmit = async (e) => {
-        loader.classList.remove('hidden');
         e.preventDefault();
 
         const user = {};
