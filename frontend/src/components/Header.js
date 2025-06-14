@@ -8,7 +8,7 @@ export async function drawHeader(user) {
     try {
         const res = await axios.get(import.meta.env.VITE_API_URL + '/projects', {
             headers: {
-                Authorization: cookie.getCookie('accessToken')
+                Authorization:  `Bearer ${cookie.getCookie('accessToken')}`
             }
         });
         projects = res.data.data;
