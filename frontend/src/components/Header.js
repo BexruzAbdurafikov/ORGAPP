@@ -28,7 +28,6 @@ export async function drawHeader(user = null) {
     div.append(logo, title);
     header.append(div, rightElem);
 
-    // ✅ Если пользователь авторизован
     if (user) {
         let projects = [];
 
