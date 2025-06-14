@@ -63,7 +63,7 @@ const routes = [
 
 const overlay = document.querySelector('#loader-overlay');
 
-export async function router() {    
+export async function router() {
     overlay.classList.remove('hidden');
     const path = window.location.pathname;
     const app = document.getElementById('app');
@@ -74,11 +74,15 @@ export async function router() {
 
         if (match) {
             if (route.middlewares) {
-                route.middlewares.forEach((cb) => cb());
+                if (route.middlewares) {
+                    for (const middleware of route.middlewares) {
+                        await middleware();
+                    }
+                }
             }
 
             const content = await route.view(match);
-            
+
             if (route.layout) {
                 await import(`../layouts/${route.layout}.js`);
             }
