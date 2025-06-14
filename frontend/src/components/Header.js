@@ -1,24 +1,8 @@
 import axios from "axios";
 import { cookie } from "../utils/cookie";
 
-export async function drawHeader(user) {
+export async function drawHeader(user = null) {
     const currentPath = window.location.pathname;
-
-    let projects = [];
-    if (currentPath === '/Projects' || currentPath.startsWith('/ProjectPage/')) {
-        try {
-            const res = await axios.get(import.meta.env.VITE_API_URL + '/projects', {
-                headers: {
-                    Authorization:  `Bearer ${cookie.getCookie('accessToken')}`
-                }
-            });
-            projects = res.data.data;
-        } catch (error) {
-            console.error("Не удалось загрузить проекты:", error);
-        }     
-    }else{
-        projects = [];
-    }
 
     const header = document.createElement('header');
     const div = document.createElement('div');
@@ -44,24 +28,42 @@ export async function drawHeader(user) {
     div.append(logo, title);
     header.append(div, rightElem);
 
-    if (projects.length > 0) {
-        projects.forEach(project => {
-            const allowedPages = ['/Projects', `/ProjectPage/${project._id}`, '/'];
-            if (allowedPages.includes(currentPath)) {
-                header.style.justifyContent = 'space-between';
-                userName.innerHTML = user.user.displayName?.charAt(0).toUpperCase() || '';
-                rightElem.append(userName);
-            }
+    // ✅ Если пользователь авторизован
+    if (user) {
+        let projects = [];
 
-            if (currentPath === `/ProjectPage/${project._id}`) {
-                const a = document.createElement('a');
-                a.classList.add('header__link');
-                a.textContent = 'All projects';
-                a.href = '/Projects';
-                rightElem.prepend(a);
+        if (currentPath === '/Projects' || currentPath.startsWith('/ProjectPage/')) {
+            try {
+                const res = await axios.get(import.meta.env.VITE_API_URL + '/projects', {
+                    headers: {
+                        Authorization: `Bearer ${cookie.getCookie('accessToken')}`
+                    }
+                });
+                projects = res.data.data;
+            } catch (error) {
+                console.error("Не удалось загрузить проекты:", error);
             }
-        });
+        }
+
+        if (projects.length > 0) {
+            projects.forEach(project => {
+                const allowedPages = ['/Projects', `/ProjectPage/${project._id}`, '/'];
+                if (allowedPages.includes(currentPath)) {
+                    header.style.justifyContent = 'space-between';
+                    userName.innerHTML = user.user?.displayName?.charAt(0).toUpperCase() || '';
+                    rightElem.append(userName);
+                }
+
+                if (currentPath === `/ProjectPage/${project._id}`) {
+                    const a = document.createElement('a');
+                    a.classList.add('header__link');
+                    a.textContent = 'All projects';
+                    a.href = '/Projects';
+                    rightElem.prepend(a);
+                }
+            });
+        }
     }
-    
+
     document.body.prepend(header);
 }

@@ -5,16 +5,22 @@ import { drawHeader } from "../components/Header.js";
 export default async () => {
     const accessToken = cookie.getCookie('accessToken');
 
-    if (!accessToken || accessToken === 'undefined') {
-        return redirect('/signin');
+    let payload = null;
+
+    if (accessToken && accessToken !== 'undefined') {
+        try {
+            payload = JSON.parse(atob(accessToken.split('.')[1]));
+        } catch (err) {
+            console.warn("Невалидный токен");
+        }
     }
 
-    try {
-        const payload = JSON.parse(atob(accessToken.split('.')[1]));
+    await drawHeader(payload);
 
-        await drawHeader(payload);
-    } catch (err) {
-        console.warn("Ошибка при обработке токена, редирект на /signin");
+    const publicPaths = ['/signin', '/signup'];
+    const path = window.location.pathname;
+
+    if (!payload && !publicPaths.includes(path)) {
         return redirect('/signin');
     }
 };
