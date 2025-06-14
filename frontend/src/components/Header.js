@@ -5,15 +5,17 @@ export async function drawHeader(user) {
     const currentPath = window.location.pathname;
 
     let projects = [];
-    try {
-        const res = await axios.get(import.meta.env.VITE_API_URL + '/projects', {
-            headers: {
-                Authorization:  `Bearer ${cookie.getCookie('accessToken')}`
-            }
-        });
-        projects = res.data.data;
-    } catch (error) {
-        console.error("Не удалось загрузить проекты:", error);
+    if (currentPath === '/Projects' || currentPath.startsWith('/ProjectPage/')) {
+        try {
+            const res = await axios.get(import.meta.env.VITE_API_URL + '/projects', {
+                headers: {
+                    Authorization:  `Bearer ${cookie.getCookie('accessToken')}`
+                }
+            });
+            projects = res.data.data;
+        } catch (error) {
+            console.error("Не удалось загрузить проекты:", error);
+        }     
     }
 
     const header = document.createElement('header');
