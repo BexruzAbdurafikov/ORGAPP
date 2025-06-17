@@ -1,60 +1,108 @@
-import axios from 'axios';
-import '../assets/signin.scss';
-import { cookie } from '../utils/cookie';
-import { useToast } from '../utils/hooks';
+import AuthMiddleware from "../middlewares/auth.js";
 
-const loader = document.querySelector('#loader-overlay');
-loader?.classList.add('hidden');
+const routes = [
+    {
+        path: /^\/$/,
+        view: async () => {
+            const res = await fetch('src/pages/Projects.html');
+            return await res.text();
+        },
+        loadScritps: async () => {
+            await import("../scripts/Projects.js");
+        },
+        middlewares: [AuthMiddleware],
+        layout: 'default'
+    },
+    {
+        path: /^\/ProjectPage\/[a-zA-Z0-9]+$/,
+        view: async () => {
+            const res = await fetch('src/pages/ProjectPage.html');
+            return await res.text();
+        },
+        loadScritps: async () => {
+            await import("../scripts/ProjectPage.js");
+        },
+        middlewares: [AuthMiddleware],
+        layout: 'default'
+    },
+    {
+        path: /^\/Projects$/,
+        view: async () => {
+            const res = await fetch('src/pages/Projects.html');
+            return await res.text();
+        },
+        loadScritps: async () => {
+            await import("../scripts/Projects.js");
+        },
+        middlewares: [AuthMiddleware],
+        layout: 'default'
+    },
+    {
+        path: /^\/signin$/,
+        view: async () => {
+            const res = await fetch('src/pages/signin.html');
+            return await res.text();
+        },
+        loadScritps: async () => {
+            await import("../scripts/signin.js");
+        },
+        layout: 'default'
+    },
+    {
+        path: /^\/signup$/,
+        view: async () => {
+            const res = await fetch('src/pages/signup.html');
+            return await res.text();
+        },
+        loadScritps: async () => {
+            await import("../scripts/signup.js");
+        },
+        layout: 'default'
+    }
+];
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Ждём появления формы после загрузки HTML в #app
-  const waitForForm = () => {
-    const form = document.forms.signin;
-    if (!form) {
-      return setTimeout(waitForForm, 100); // ждём 100мс и пробуем снова
+const overlay = document.querySelector('#loader-overlay');
+
+export async function router() {
+    overlay.classList.remove('hidden');
+    const path = window.location.pathname;
+    const app = document.getElementById('app');
+
+
+    for (const route of routes) {
+        const match = path.match(route.path);
+
+        if (match) {
+            if (route.middlewares) {
+                if (route.middlewares) {
+                    for (const middleware of route.middlewares) {
+                        await middleware();
+                    }
+                }
+            }
+
+            const content = await route.view(match);
+
+            if (route.layout) {
+                await import(`../layouts/${route.layout}.js`);
+            }
+
+            app.innerHTML = content;
+            await route.loadScritps();
+            return;
+        }
     }
 
-    console.log('Форма найдена:', form);
+    const res = await fetch('src/pages/404.html');
+    app.innerHTML = await res.text();
+    overlay.classList.add('hidden')
+}
 
-    form.onsubmit = async (e) => {
-      e.preventDefault();
-      loader?.classList.remove('hidden');
-
-      const user = {};
-      const fm = new FormData(form);
-
-      fm.forEach((value, key) => {
-        user[key] = value;
-      });
-
-      try {
-        const res = await axios.post(import.meta.env.VITE_API_URL + '/authentication', {
-          ...user,
-          strategy: 'local',
-        });
-        cookie.setCookie('accessToken', res.data.accessToken, 1);
-        useToast('success', 'Вы успешно вошли!');
-        setTimeout(() => {
-          window.location.href = 'Projects';
-        }, 2000);
-      } catch (e) {
-        const code = e.response?.data?.code || e.response?.status || 500;
-        if (code === 400) {
-          useToast('error', 'Неверные данные. Проверьте форму.');
-        } else if (code === 401) {
-          useToast('error', 'Неверный логин или пароль.');
-        } else if (code === 403) {
-          useToast('error', 'Доступ запрещён.');
-        } else if (code === 404) {
-          useToast('error', 'Маршрут не найден.');
-        } else {
-          useToast('error', 'Ошибка входа: ' + code);
-        }
-      } finally {
-        loader?.classList.add('hidden');
-      }
-    };
-  };
-
-  waitForForm();
-});
+export function handleLinkClick(e) {
+    if (e.target.matches('a[data-link]')) {
+        e.preventDefault();
+        const url = e.target.href;
+        history.pushState(null, null, url);
+        router();
+    }
+}
