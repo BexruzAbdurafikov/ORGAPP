@@ -10,7 +10,7 @@ const routes = [
         loadScritps: async () => {
             await import("../scripts/Projects.js");
         },
-        // middlewares: [AuthMiddleware],
+        middlewares: [AuthMiddleware],
         layout: 'default'
     },
     {
@@ -34,7 +34,7 @@ const routes = [
         loadScritps: async () => {
             await import("../scripts/Projects.js");
         },
-        // middlewares: [AuthMiddleware],
+        middlewares: [AuthMiddleware],
         layout: 'default'
     },
     {
