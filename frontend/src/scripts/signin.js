@@ -7,6 +7,8 @@ const form = document.querySelector('form');
 const loader = document.querySelector('#loader-overlay');
 
 loader.classList.add('hidden');
+console.log(form);
+
 
 form.onsubmit = async (e) => {
     e.preventDefault();
