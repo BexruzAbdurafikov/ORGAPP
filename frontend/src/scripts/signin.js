@@ -3,7 +3,8 @@ import '../assets/signin.scss'
 import { cookie } from '../utils/cookie';
 import { useToast } from '../utils/hooks';
 
-const form = document.querySelector('form');
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
 const loader = document.querySelector('#loader-overlay');
 
 loader.classList.add('hidden');
@@ -47,3 +48,4 @@ form.onsubmit = async (e) => {
         loader.classList.add('hidden');
     }
 };
+})
