@@ -95,7 +95,7 @@ export async function router() {
         }
     }
 
-    const res = await fetch('src/pages/404.html');
+    const res = await fetch('/pages/404.html');
     app.innerHTML = await res.text();
     overlay.classList.add('hidden')
 }
