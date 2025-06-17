@@ -42,7 +42,7 @@ const routes = [
         view: async () => {
             const res = await fetch('public/signin.html');
             
-            return await res.body();
+            return await res.text();
         },
         loadScritps: async () => {
             await import("../scripts/signin.js");
