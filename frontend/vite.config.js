@@ -15,7 +15,7 @@ export default defineConfig({
                 Projects: resolve(__dirname, '/pages/Projects.html'),
                 signin: resolve(__dirname, '/pages/signin.html'),
                 signup: resolve(__dirname, '/pages/signup.html'),
-                404: resolve(__dirname, '/pages/404.html'),
+                404: resolve(__dirname, '/404.html'),
                 ProjectPage: resolve(__dirname, '/pages/ProjectPage.html'),
             },
         },
