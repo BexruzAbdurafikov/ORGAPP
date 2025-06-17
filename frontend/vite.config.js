@@ -12,11 +12,11 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: resolve(__dirname, 'index.html'),
-                Projects: resolve(__dirname, '/pages/Projects.html'),
-                signin: resolve(__dirname, '/pages/signin.html'),
-                signup: resolve(__dirname, '/pages/signup.html'),
+                Projects: resolve(__dirname, '/Projects.html'),
+                signin: resolve(__dirname, '/signin.html'),
+                signup: resolve(__dirname, '/signup.html'),
                 404: resolve(__dirname, '/404.html'),
-                ProjectPage: resolve(__dirname, '/pages/ProjectPage.html'),
+                ProjectPage: resolve(__dirname, '/ProjectPage.html'),
             },
         },
     },
