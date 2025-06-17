@@ -3,11 +3,13 @@ import '../assets/signin.scss'
 import { cookie } from '../utils/cookie';
 import { useToast } from '../utils/hooks';
 
+const loader = document.querySelector('#loader-overlay');
+
+loader.classList.add('hidden');
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.forms.signin;
-    const loader = document.querySelector('#loader-overlay');
 
-    loader.classList.add('hidden');
     console.log(form);
 
     form.onsubmit = async (e) => {
