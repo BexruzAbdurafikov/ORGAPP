@@ -3,7 +3,7 @@ import '../assets/signin.scss'
 import { cookie } from '../utils/cookie';
 import { useToast } from '../utils/hooks';
 
-const form = document.getElementById('signin');
+const form = document.querySelector('form');
 const loader = document.querySelector('#loader-overlay');
 
 loader.classList.add('hidden');
