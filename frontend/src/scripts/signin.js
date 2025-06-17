@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.onsubmit = async (e) => {
         e.preventDefault();
-
+        loader.classList.remove('hidden');
         const user = {};
         const fm = new FormData(form);
 
