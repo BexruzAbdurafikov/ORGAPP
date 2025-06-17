@@ -82,6 +82,8 @@ export async function router() {
             }
 
             const content = await route.view(match);
+            console.log(content);
+            
 
             if (route.layout) {
                 await import(`../layouts/${route.layout}.js`);
