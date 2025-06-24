@@ -53,7 +53,7 @@ closeBtn.onclick = () => {
 }
 
 async function drawProject() {
-    try{
+    try {
         loader.classList.remove('hidden');
         const res = await axios.get(import.meta.env.VITE_API_URL + `/projects`, {
             headers: {
@@ -64,43 +64,43 @@ async function drawProject() {
         const projects__container = document.querySelector('.projects');
         projects__container.innerHTML = '';
         const projects_elems = document.querySelector('.projects__elems');
-    
+
         projects.forEach((project, index) => {
             const projectBlock = document.createElement('div');
             const title = document.createElement('h2');
             const div = document.createElement('div');
-    
+
             projectBlock.classList.add('project');
             title.classList.add('title');
             div.classList.add('project__index');
-    
+
             projectBlock.dataset.index = index;
             div.dataset.index = index;
-    
+
             title.textContent = project.name;
             div.textContent = `P ${index + 1}`;
-    
+
             div.onclick = () => {
                 window.location.href = `/ProjectPage/${project._id}`;
             }
-    
+
             div.addEventListener('mouseenter', () => {
                 const relatedProject = document.querySelector(`.project[data-index="${index}"]`);
                 relatedProject.classList.add('highlight');
             });
-    
+
             div.addEventListener('mouseleave', () => {
                 const relatedProject = document.querySelector(`.project[data-index="${index}"]`);
                 relatedProject.classList.remove('highlight');
             });
-    
+
             projectBlock.append(title);
             projects_elems.append(div);
             projects__container.append(projectBlock);
         });
-    }catch (e) {
+    } catch (e) {
         useToast('error', 'Ошибка загрузки проектов: ' + e.code);
-    }finally{
+    } finally {
         loader.classList.add('hidden');
     }
 
