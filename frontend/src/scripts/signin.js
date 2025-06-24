@@ -7,7 +7,6 @@ const loader = document.querySelector('#loader-overlay');
 
 loader.classList.add('hidden');
 
-document.addEventListener('DOMContentLoaded', () => {
     const form = document.forms.signin;
 
     console.log(form);
@@ -49,4 +48,3 @@ document.addEventListener('DOMContentLoaded', () => {
             loader.classList.add('hidden');
         }
     };
-});
